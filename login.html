@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>登录 · AI 几何画板</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230c5c56'/%3E%3Cpath d='M16 7 25 23H7Z' fill='none' stroke='%23f7f4ee' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='16' cy='18.5' r='3' fill='none' stroke='%23f7f4ee' stroke-width='2.4'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/auth.css" />
+</head>
+<body class="auth-page" data-auth-page="login">
+<div class="auth-wrap">
+
+  <!-- 品牌区 -->
+  <aside class="auth-brand">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0c5c56" stroke-width="2" stroke-linejoin="round">
+          <path d="M12 3.5 20 19H4z" />
+          <circle cx="12" cy="15" r="2.6" />
+        </svg>
+      </span>
+      <span>AI 几何画板</span>
+    </a>
+    <div class="auth-decor" aria-hidden="true">
+      <svg viewBox="0 0 460 900" preserveAspectRatio="xMidYMid slice" fill="none">
+        <g stroke="#ffffff" opacity="0.1">
+          <path d="M0 80h460M0 160h460M0 240h460M0 320h460M0 400h460M0 480h460M0 560h460M0 640h460M0 720h460M0 800h460"/>
+          <path d="M80 0v900M160 0v900M240 0v900M320 0v900M400 0v900"/>
+        </g>
+        <g stroke="#ffffff" stroke-width="1.6">
+          <circle cx="230" cy="310" r="118" opacity="0.55" />
+          <path d="M156 424 304 424 230 190z" opacity="0.75" stroke-linejoin="round" />
+          <circle cx="230" cy="338" r="52" opacity="0.55" />
+        </g>
+        <g fill="#ffffff">
+          <circle cx="230" cy="190" r="4" />
+          <circle cx="156" cy="424" r="4" />
+          <circle cx="304" cy="424" r="4" />
+          <circle cx="230" cy="310" r="4" />
+        </g>
+      </svg>
+    </div>
+    <div class="auth-copy">
+      <h2>用一句自然语言,让 AI 在画板上作图</h2>
+      <p class="lede-line">几何 · 3D · 概率 · 科学计算,四种计算器都由大模型驱动;命令自动检查、自动纠错,并用中文解释每一步。</p>
+      <ul class="auth-features">
+        <li>
+          <span class="f-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 3 21 19H3z"/><circle cx="12" cy="15" r="2.5"/></svg>
+          </span>
+          <span><b>四种计算器</b>&nbsp;自然语言驱动作图与计算</span>
+        </li>
+        <li>
+          <span class="f-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          </span>
+          <span><b>自动纠错</b>&nbsp;失败命令自动诊断并重新执行</span>
+        </li>
+        <li>
+          <span class="f-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-9-9"/><path d="M21 3v6h-6"/></svg>
+          </span>
+          <span><b>云端同步</b>&nbsp;会话随账号保存,多设备继续作图</span>
+        </li>
+      </ul>
+    </div>
+    <p class="auth-foot">© 2026 AI 几何画板 · 高保真原型</p>
+  </aside>
+
+  <!-- 登录表单区 -->
+  <main class="auth-form-side">
+    <div class="auth-card">
+      <div class="a-head">
+        <h1>欢迎回来</h1>
+        <p class="a-sub">登录后,你的作图会话将自动保存到云端。</p>
+      </div>
+
+      <form class="auth-form" id="login-form" novalidate>
+        <div class="field">
+          <label for="login-email">邮箱</label>
+          <input type="email" id="login-email" placeholder="you@example.com" autocomplete="username" />
+          <p class="error-msg">请输入正确的邮箱地址</p>
+        </div>
+        <div class="field">
+          <label for="login-password">密码</label>
+          <input type="password" id="login-password" placeholder="请输入密码" autocomplete="current-password" />
+          <p class="error-msg">密码至少 6 位</p>
+        </div>
+        <div class="auth-row-between">
+          <label class="check-line"><input type="checkbox" id="remember" checked /> 记住我</label>
+          <a href="forgot-password.html">忘记密码?</a>
+        </div>
+        <button type="submit" class="btn btn-lg btn-block auth-submit">登录</button>
+      </form>
+
+      <div class="demo-hint">
+        <span>演示账号:demo@aiggb.cn / demo1234</span>
+        <button type="button" id="fill-demo">一键填入</button>
+      </div>
+
+      <div class="auth-divider">或使用以下方式登录</div>
+      <div class="social-row">
+        <button type="button" class="social-btn" data-social="wechat">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#2bae3f"><path d="M9.5 4C5.9 4 3 6.5 3 9.6c0 1.8 1 3.4 2.5 4.4l-.6 2 2.2-1.1c.7.2 1.5.3 2.3.3h.4a5 5 0 0 1-.2-1.4c0-3 2.8-5.4 6.3-5.4h.4C15.9 6.2 13 4 9.5 4ZM7 8a.9.9 0 1 1 0 1.8A.9.9 0 0 1 7 8Zm5 0a.9.9 0 1 1 0 1.8A.9.9 0 0 1 12 8Z"/><path d="M21 13.8c0-2.4-2.4-4.4-5.3-4.4s-5.3 2-5.3 4.4 2.4 4.4 5.3 4.4c.6 0 1.2-.1 1.7-.3l1.8.9-.5-1.7c1.3-.8 2.3-2 2.3-3.3Zm-6.7-.4a.8.8 0 1 1 0-1.6.8.8 0 0 1 0 1.6Zm3.4 0a.8.8 0 1 1 0-1.6.8.8 0 0 1 0 1.6Z"/></svg>
+          微信
+        </button>
+        <button type="button" class="social-btn" data-social="github">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#1c241f"><path d="M12 2a10 10 0 0 0-3.2 19.5c.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.2-3.4-1.2-.4-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.6 2.4 1.1 3 .9.1-.7.4-1.1.6-1.4-2.2-.3-4.6-1.1-4.6-5a4 4 0 0 1 1-2.7c-.1-.3-.4-1.3.1-2.7 0 0 .9-.3 2.8 1a9.5 9.5 0 0 1 5 0c1.9-1.3 2.8-1 2.8-1 .5 1.4.2 2.4.1 2.7a4 4 0 0 1 1 2.7c0 3.9-2.4 4.7-4.6 5 .4.3.7.9.7 1.9v2.8c0 .3.2.6.7.5A10 10 0 0 0 12 2Z"/></svg>
+          GitHub
+        </button>
+      </div>
+
+      <p class="auth-switch">还没有账号?<a href="register.html">立即注册</a></p>
+    </div>
+  </main>
+</div>
+
+<script src="js/store.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,207 @@
+/* ==========================================================================
+   高保真原型 · 登录 / 注册 / 找回密码
+   左右分栏:左侧品牌区(深绿渐变 + 几何装饰),右侧表单卡片
+   ========================================================================== */
+
+.auth-page { background: var(--paper); }
+
+.auth-wrap {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(320px, 460px) 1fr;
+}
+
+/* ---------- 品牌区 ---------- */
+
+.auth-brand {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2.4rem 2.6rem;
+  color: #e9f2ee;
+  background:
+    radial-gradient(1200px 700px at 85% -10%, rgba(94, 158, 148, 0.5), transparent 60%),
+    radial-gradient(900px 600px at -20% 110%, rgba(30, 96, 88, 0.85), transparent 55%),
+    linear-gradient(158deg, #0c5c56 0%, #06342f 100%);
+}
+
+.auth-brand .brand { color: #f4f8f6; }
+.auth-brand .brand:hover { color: #fff; }
+.auth-brand .brand-mark { background: #f4f8f6; }
+
+.auth-decor { position: absolute; inset: 0; pointer-events: none; }
+/* 装饰几何图形偏上放置、降低不透明度,避免与品牌文案叠压 */
+.auth-decor svg { width: 100%; height: 100%; opacity: 0.28; }
+.auth-decor svg g:not(:first-child) { transform: translateY(-118px); }
+
+.auth-copy { position: relative; max-width: 380px; margin: auto 0; }
+.auth-copy h2 {
+  font-family: var(--serif);
+  font-size: 2rem;
+  line-height: 1.3;
+  margin-bottom: 1rem;
+}
+.auth-copy p.lede-line { color: #cfe0da; font-size: 0.95rem; margin-bottom: 1.8rem; }
+
+.auth-features { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.9rem; }
+.auth-features li { display: flex; align-items: flex-start; gap: 0.7rem; font-size: 0.9rem; color: #e2ede9; }
+.auth-features .f-icon {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  color: #a8d4c9;
+  flex: none;
+  margin-top: 1px;
+}
+.auth-features b { color: #fff; font-weight: 600; }
+
+.auth-foot { position: relative; font-size: 0.78rem; color: #8fb5ac; }
+
+/* ---------- 表单区 ---------- */
+
+.auth-form-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 1.5rem;
+}
+
+.auth-card { width: 100%; max-width: 420px; }
+
+.auth-card .a-head { margin-bottom: 1.4rem; }
+.auth-card h1 { font-family: var(--serif); font-size: 1.65rem; margin-bottom: 0.3rem; }
+.auth-card .a-sub { color: var(--ink-soft); font-size: 0.9rem; }
+
+.auth-tabs {
+  display: flex;
+  background: #e9e4d9;
+  border-radius: 999px;
+  padding: 3px;
+  margin-bottom: 1.3rem;
+}
+.auth-tabs button {
+  flex: 1;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  padding: 0.45rem 0.8rem;
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+.auth-tabs button.active { background: #fff; color: var(--ink); font-weight: 500; box-shadow: var(--shadow-sm); }
+
+.auth-form { display: flex; flex-direction: column; gap: 0.95rem; }
+
+.auth-row-between { display: flex; justify-content: space-between; align-items: center; }
+.auth-row-between a { font-size: 0.85rem; }
+
+.auth-submit { margin-top: 0.35rem; }
+
+.auth-divider { display: flex; align-items: center; gap: 0.8rem; margin: 1.15rem 0 0.9rem; color: var(--ink-faint); font-size: 0.78rem; }
+.auth-divider::before, .auth-divider::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+
+.social-row { display: flex; gap: 0.7rem; }
+.social-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  padding: 0.55rem 0;
+  font-size: 0.88rem;
+  color: var(--ink);
+  cursor: pointer;
+}
+.social-btn:hover { border-color: var(--brand); color: var(--brand); }
+
+.auth-switch { margin-top: 1.4rem; text-align: center; font-size: 0.88rem; color: var(--ink-soft); }
+
+.demo-hint {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-top: 1rem;
+  padding: 0.55rem 0.8rem;
+  border: 1px dashed #b9d5cd;
+  border-radius: var(--radius-sm);
+  background: var(--brand-soft);
+  font-size: 0.8rem;
+  color: var(--brand);
+}
+.demo-hint button {
+  margin-left: auto;
+  border: 1px solid var(--brand);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--brand);
+  font-size: 0.75rem;
+  padding: 0.18rem 0.7rem;
+  cursor: pointer;
+  flex: none;
+}
+.demo-hint button:hover { background: var(--brand); color: #f7f4ee; }
+
+.code-row { display: flex; gap: 0.6rem; }
+.code-row input { flex: 1; letter-spacing: 0.35em; }
+.code-row .send-code { flex: none; white-space: nowrap; }
+
+.agreement { font-size: 0.82rem; color: var(--ink-soft); line-height: 1.55; }
+.agreement a { color: var(--brand); }
+
+/* 找回密码步骤 */
+.steps-indicator { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.3rem; font-size: 0.8rem; color: var(--ink-faint); }
+.steps-indicator .step {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1.5px solid var(--line);
+  font-size: 0.78rem;
+  flex: none;
+}
+.steps-indicator .step.on { background: var(--brand); border-color: var(--brand); color: #f7f4ee; }
+.steps-indicator .step.done { background: var(--brand-soft); border-color: var(--brand); color: var(--brand); }
+.steps-indicator .bar { flex: 1; height: 1.5px; background: var(--line); }
+.steps-indicator .bar.done { background: var(--brand); }
+
+.sent-mail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  text-align: center;
+  padding: 1.2rem 0.2rem;
+}
+.sent-mail .m-icon {
+  display: grid;
+  place-items: center;
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  background: var(--brand-soft);
+  color: var(--brand);
+}
+.sent-mail p { color: var(--ink-soft); font-size: 0.9rem; }
+.sent-mail code { font-family: var(--mono); background: #ede8dd; padding: 0.05rem 0.4rem; border-radius: 4px; }
+
+/* ---------- 响应式 ---------- */
+
+@media (max-width: 860px) {
+  .auth-wrap { grid-template-columns: 1fr; }
+  .auth-brand { padding: 1.4rem 1.5rem; }
+  .auth-copy { margin: 1.6rem 0; }
+  .auth-copy h2 { font-size: 1.45rem; }
+  .auth-features li:nth-child(3) { display: none; }
+  .auth-form-side { padding: 1.8rem 1.2rem; }
+}

@@ -1,0 +1,283 @@
+/* ==========================================================================
+   高保真原型 · 模拟画板
+   以纯 HTML/SVG 还原四种 GeoGebra 计算器的界面形态:
+   几何 / 3D —— 工具栏 + 代数区 + 画布
+   概率 —— 分布选择 + 密度曲线 + 统计结果
+   科学 —— 显示屏 + 按键键盘
+   ========================================================================== */
+
+.ggb {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  overflow: hidden;
+}
+
+/* ---------- 几何 / 3D 工具栏 ---------- */
+
+.ggb-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 5px 8px;
+  background: #fcfbf8;
+  border-bottom: 1px solid #e8e2d8;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.ggb-toolbar::-webkit-scrollbar { display: none; }
+
+.ggb-tool {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: #4c554f;
+  cursor: pointer;
+  flex: none;
+}
+.ggb-tool:hover { background: #ece7dd; }
+.ggb-tool.on { background: #dcebe7; color: var(--brand); }
+
+.ggb-tool-sep { width: 1px; height: 22px; background: #e0dacf; margin: 0 6px; flex: none; }
+
+.ggb-tool[data-tip]::after {
+  content: attr(data-tip);
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.2rem 0.55rem;
+  background: #2b342e;
+  color: #f7f4ee;
+  font-size: 0.72rem;
+  border-radius: 5px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.12s ease 0.3s;
+  z-index: 40;
+}
+.ggb-tool[data-tip]:hover::after { opacity: 1; }
+
+/* ---------- 代数区 ---------- */
+
+.ggb-main { flex: 1; min-height: 0; display: flex; }
+
+.ggb-algebra {
+  width: 176px;
+  flex: none;
+  background: #fcfbf8;
+  border-right: 1px solid #e8e2d8;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.ggb-algebra-head {
+  padding: 0.55rem 0.8rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+  border-bottom: 1px solid #eee9e0;
+}
+.ggb-objects { list-style: none; margin: 0; padding: 0.25rem 0; overflow-y: auto; }
+
+.ggb-object {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.32rem 0.8rem;
+  font-size: 0.8rem;
+  cursor: default;
+}
+.ggb-object:hover { background: #f0ede5; }
+.ggb-object .g-dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.ggb-object .g-line { width: 12px; height: 2.5px; border-radius: 2px; flex: none; }
+.ggb-object .g-name { font-style: italic; color: var(--ink); white-space: nowrap; }
+.ggb-object .g-def { color: var(--ink-soft); font-family: var(--mono); font-size: 0.72rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ---------- 画布 ---------- */
+
+.ggb-canvas { position: relative; flex: 1; min-width: 0; background: #fff; }
+
+.ggb-svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+.ggb-hint {
+  position: absolute;
+  right: 10px;
+  bottom: 8px;
+  padding: 0.18rem 0.55rem;
+  background: rgba(247, 244, 238, 0.85);
+  border: 1px solid var(--line-soft);
+  border-radius: 999px;
+  font-size: 0.72rem;
+  color: var(--ink-faint);
+  pointer-events: none;
+}
+
+.ggb-loading {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: #fcfbf8;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+  gap: 0.7rem;
+}
+.ggb-loading .spinner {
+  width: 22px;
+  height: 22px;
+  border: 2.5px solid var(--line);
+  border-top-color: var(--brand);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* ---------- 概率计算器 ---------- */
+
+.prob {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+}
+
+.prob-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  flex-wrap: wrap;
+  padding: 0.6rem 0.9rem;
+  background: #fcfbf8;
+  border-bottom: 1px solid #e8e2d8;
+}
+.prob-field { display: flex; align-items: center; gap: 0.4rem; font-size: 0.82rem; color: var(--ink-soft); }
+.prob-field label { white-space: nowrap; }
+.prob-field select, .prob-field input {
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: #fff;
+  padding: 0.32rem 0.5rem;
+  font-size: 0.82rem;
+  outline: none;
+}
+.prob-field select:focus, .prob-field input:focus { border-color: var(--brand); }
+.prob-field input { width: 64px; font-family: var(--mono); }
+
+.prob-plot { flex: 1; min-height: 0; position: relative; }
+.prob-plot svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+.prob-result {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.2rem;
+  padding: 0.6rem 0.95rem;
+  background: #fcfbf8;
+  border-top: 1px solid #e8e2d8;
+  font-size: 0.84rem;
+}
+.prob-result .pr-key { color: var(--ink-soft); }
+.prob-result .pr-value { font-family: var(--mono); font-weight: 600; color: var(--ink); }
+.prob-result .pr-value.hl { color: var(--brand); font-size: 0.95rem; }
+
+/* ---------- 科学计算器 ---------- */
+
+.sci {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: #f4f1ea;
+  padding: 1.1rem;
+  gap: 0.8rem;
+}
+
+.sci-display {
+  background: #1e2622;
+  border-radius: var(--radius-md);
+  padding: 0.9rem 1.1rem 0.75rem;
+  color: #e8f3ec;
+  min-height: 118px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.3rem;
+  position: relative;
+}
+.sci-mode-badge {
+  position: absolute;
+  top: 0.65rem;
+  right: 0.8rem;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: #9fbfae;
+  border: 1px solid #3d4a42;
+  padding: 0.06rem 0.45rem;
+  border-radius: 5px;
+}
+.sci-history {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: #9fbfae;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-height: 1.1em;
+}
+.sci-main {
+  font-family: var(--mono);
+  font-size: 2.1rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sci-keys {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.5rem;
+}
+
+.sci-key {
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: #fff;
+  color: var(--ink);
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 1px 0 rgba(28, 36, 31, 0.14);
+  transition: transform 0.05s ease, background 0.12s ease;
+  display: grid;
+  place-items: center;
+  min-height: 46px;
+}
+.sci-key:hover { background: #faf6ee; }
+.sci-key:active { transform: translateY(1px); box-shadow: none; }
+.sci-key.fn { background: #e9e4d8; font-size: 0.9rem; color: #3d4a42; }
+.sci-key.fn:hover { background: #dfd8c8; }
+.sci-key.op { background: #dcebe7; color: var(--brand); font-size: 1.05rem; }
+.sci-key.op:hover { background: #cfe3dd; }
+.sci-key.eq { background: var(--brand); color: #f7f4ee; font-size: 1.15rem; }
+.sci-key.eq:hover { background: var(--brand-dark); }
+.sci-key.ac { background: #f3e5e1; color: var(--err-ink); }
+.sci-key.ac:hover { background: #ecd5ce; }
+
+/* ---------- 窄屏 ---------- */
+
+@media (max-width: 860px) {
+  .ggb-algebra { width: 132px; }
+}

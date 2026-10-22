@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>设置 · AI 几何画板</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230c5c56'/%3E%3Cpath d='M16 7 25 23H7Z' fill='none' stroke='%23f7f4ee' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='16' cy='18.5' r='3' fill='none' stroke='%23f7f4ee' stroke-width='2.4'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/settings.css" />
+</head>
+<body data-page="settings">
+
+  <header class="topbar">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f7f4ee" stroke-width="2" stroke-linejoin="round">
+          <path d="M12 3.5 20 19H4z" />
+          <circle cx="12" cy="15" r="2.6" />
+        </svg>
+      </span>
+      <span>AI 几何画板</span>
+    </a>
+    <nav class="topnav" aria-label="全局导航">
+      <a href="index.html">工作区</a>
+      <a href="dashboard.html">工作台</a>
+      <a href="settings.html" class="active">设置</a>
+    </nav>
+    <div class="topbar-right" data-topbar-right></div>
+  </header>
+
+  <main class="page">
+    <div class="page-head">
+      <h1>设置</h1>
+      <p>管理模型接入、账户信息与数据。模型配置对应真实项目的 .env 环境变量。</p>
+    </div>
+
+    <div class="settings-layout">
+      <nav class="settings-nav" id="settings-nav">
+        <button type="button" data-panel="model" class="active">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 9h6M9 13h6M9 17h3"/></svg>
+          模型接入
+        </button>
+        <button type="button" data-panel="account">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+          账户信息
+        </button>
+        <button type="button" data-panel="data">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>
+          数据管理
+        </button>
+        <button type="button" data-panel="about">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+          关于
+        </button>
+      </nav>
+
+      <!-- 模型接入 -->
+      <section class="settings-panel active" data-panel="model">
+        <div class="card card-white">
+          <h2>当前模型</h2>
+          <p class="card-sub">对应 .env 的 LLM_MODEL。切换后,下一次作图请求将使用新模型;经 EdgeOne AI Gateway 路由的模型由网关统一鉴权与统计。</p>
+          <div id="model-options"></div>
+        </div>
+
+        <div class="card gateway-card">
+          <div class="gateway-row">
+            <span class="dot dot-ok"></span>
+            <b style="font-size:0.95rem">EdgeOne AI Gateway</b>
+            <span class="badge badge-ok">已接入</span>
+          </div>
+          <p class="card-sub" style="margin:0.35rem 0 0">对应 .env 的 AI_GATEWAY_BASE_URL / AI_GATEWAY_API_KEY(当前项目已预留,尚未在代码中使用)。</p>
+          <div class="gateway-row" style="margin-top:0.6rem">
+            <span style="color:var(--ink-soft)">端点</span>
+            <code>https://ai-gateway.edgeone.link/v1</code>
+          </div>
+          <div class="gateway-row" style="margin-top:0.35rem">
+            <span style="color:var(--ink-soft)">网关模型</span>
+            <code>@makers/deepseek-v4-flash</code>
+          </div>
+          <div class="gateway-stats">
+            <span class="g-stat">本月请求<b>86</b></span>
+            <span class="g-stat">本月 Token<b>412K</b></span>
+            <span class="g-stat">月额度<b>2M / 5M</b></span>
+          </div>
+        </div>
+
+        <div class="card card-white">
+          <h2>API Key</h2>
+          <p class="card-sub">密钥只保存在服务端(.env / 平台环境变量),浏览器请求经由同源代理转发,不会下发到前端。</p>
+          <div class="key-box">
+            <code id="api-key-text">sk-••••••••••••••••••••••••3f8a</code>
+            <button type="button" id="key-eye">显示</button>
+            <button type="button" id="key-copy">复制</button>
+          </div>
+          <button class="btn btn-ghost btn-sm" id="key-reset">重置密钥</button>
+          <div style="display:flex;align-items:center;gap:0.8rem;margin-top:0.9rem">
+            <button class="btn btn-sm" id="test-conn">测试连接</button>
+            <span class="test-result" id="test-result" hidden></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 账户信息 -->
+      <section class="settings-panel" data-panel="account">
+        <div class="card card-white">
+          <h2>个人资料</h2>
+          <p class="card-sub">修改昵称与邮箱。账户数据保存在服务端(模拟)。</p>
+          <div class="profile-row">
+            <span class="avatar avatar-lg" id="profile-avatar">–</span>
+            <div class="p-meta">
+              <b id="profile-name">–</b>
+              <p id="profile-email">–</p>
+            </div>
+            <button class="btn btn-ghost btn-sm" id="avatar-btn">更换头像</button>
+          </div>
+          <form class="form-grid" id="profile-form">
+            <div class="field">
+              <label for="pf-name">昵称</label>
+              <input type="text" id="pf-name" />
+              <p class="error-msg">昵称至少 2 个字符</p>
+            </div>
+            <div class="field">
+              <label for="pf-email">邮箱</label>
+              <input type="email" id="pf-email" />
+              <p class="error-msg">请输入正确的邮箱地址</p>
+            </div>
+            <div class="full" style="display:flex;justify-content:flex-end">
+              <button type="submit" class="btn btn-sm">保存修改</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="card card-white">
+          <h2>修改密码</h2>
+          <p class="card-sub">修改后所有设备需要重新登录。</p>
+          <form class="form-grid" id="password-form">
+            <div class="field">
+              <label for="pw-current">当前密码</label>
+              <input type="password" id="pw-current" autocomplete="current-password" />
+              <p class="error-msg">当前密码不能为空</p>
+            </div>
+            <div></div>
+            <div class="field">
+              <label for="pw-new">新密码</label>
+              <input type="password" id="pw-new" autocomplete="new-password" />
+              <p class="error-msg">至少 8 位,且需同时包含字母和数字</p>
+            </div>
+            <div class="field">
+              <label for="pw-confirm">确认新密码</label>
+              <input type="password" id="pw-confirm" autocomplete="new-password" />
+              <p class="error-msg">两次输入的密码不一致</p>
+            </div>
+            <div class="full" style="display:flex;justify-content:flex-end">
+              <button type="submit" class="btn btn-sm">更新密码</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- 数据管理 -->
+      <section class="settings-panel" data-panel="data">
+        <div class="card card-white">
+          <h2>数据管理</h2>
+          <p class="card-sub">导出你的全部云端会话,或管理本地缓存。</p>
+          <div class="data-actions">
+            <div class="data-action">
+              <span class="s-icon" style="display:grid;place-items:center;width:34px;height:34px;border-radius:9px;background:var(--brand-soft);color:var(--brand);flex:none">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg>
+              </span>
+              <div class="d-main">
+                <b>导出全部会话</b>
+                <p>将云端会话导出为 JSON 文件,包含对话记录与执行报告。</p>
+              </div>
+              <button class="btn btn-ghost btn-sm" id="export-all">导出</button>
+            </div>
+            <div class="data-action">
+              <span class="s-icon" style="display:grid;place-items:center;width:34px;height:34px;border-radius:9px;background:var(--brand-soft);color:var(--brand);flex:none">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>
+              </span>
+              <div class="d-main">
+                <b>清空本地缓存</b>
+                <p>清空浏览器中的原型演示数据(会话草稿、偏好设置),云端数据不受影响。</p>
+              </div>
+              <button class="btn btn-ghost btn-sm" id="clear-cache">清空</button>
+            </div>
+            <div class="data-action danger-zone">
+              <span class="s-icon" style="display:grid;place-items:center;width:34px;height:34px;border-radius:9px;background:var(--err-bg);color:var(--err-ink);flex:none">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>
+              </span>
+              <div class="d-main">
+                <b>删除账号</b>
+                <p>永久删除账号与全部云端会话,不可恢复。</p>
+              </div>
+              <button class="btn btn-danger btn-sm" id="delete-account">删除账号</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 关于 -->
+      <section class="settings-panel" data-panel="about">
+        <div class="card card-white">
+          <div class="about-logo">
+            <span class="brand-mark" style="width:38px;height:38px;border-radius:10px">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f7f4ee" stroke-width="2" stroke-linejoin="round">
+                <path d="M12 3.5 20 19H4z" />
+                <circle cx="12" cy="15" r="2.6" />
+              </svg>
+            </span>
+            <span class="brand">AI 几何画板</span>
+            <span class="version">高保真原型 v0.1.0</span>
+          </div>
+          <p class="card-sub">用一句自然语言,让 AI 在 GeoGebra 画板上作图、计算概率、求值,并自动检查、自动纠错、用中文解释每一步。</p>
+          <h2 style="margin-top:1.2rem">技术栈</h2>
+          <ul class="tech-list">
+            <li><span class="t-name">前端框架</span><span class="t-desc">SolidJS 1.9 + TypeScript 5.8 + Vite 7</span></li>
+            <li><span class="t-name">画板</span><span class="t-desc">GeoGebra deployggb.js(web3d 5.4.931.2)</span></li>
+            <li><span class="t-name">AI</span><span class="t-desc">AI SDK 6 + OpenAI 兼容接口(默认 DeepSeek)</span></li>
+            <li><span class="t-name">渲染</span><span class="t-desc">marked + KaTeX + DOMPurify(Markdown/公式/XSS 消毒)</span></li>
+            <li><span class="t-name">部署</span><span class="t-desc">腾讯 EdgeOne Pages + Edge Functions 服务端代理</span></li>
+          </ul>
+          <h2 style="margin-top:1.2rem">服务端接口</h2>
+          <ul class="api-status">
+            <li><code>GET /api/status</code> LLM 配置状态<span class="st">正常 · 已配置</span></li>
+            <li><code>POST /llm/chat/completions</code> 同源转发代理<span class="st">正常 · SSE 流式</span></li>
+            <li><code>POST /api/auth/*</code> 用户注册 / 登录<span class="st">规划中 · 原型已模拟</span></li>
+            <li><code>GET /api/sessions</code> 云端会话<span class="st">规划中 · 原型已模拟</span></li>
+          </ul>
+          <p class="card-sub" style="margin-top:1.2rem">© 2026 AI 几何画板 · 本页面为高保真原型,接口状态为演示数据。</p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="js/store.js"></script>
+<script src="js/settings.js"></script>
+</body>
+</html>

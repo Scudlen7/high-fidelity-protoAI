@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>个人工作台 · AI 几何画板</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230c5c56'/%3E%3Cpath d='M16 7 25 23H7Z' fill='none' stroke='%23f7f4ee' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='16' cy='18.5' r='3' fill='none' stroke='%23f7f4ee' stroke-width='2.4'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+</head>
+<body data-page="dashboard">
+
+  <header class="topbar">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f7f4ee" stroke-width="2" stroke-linejoin="round">
+          <path d="M12 3.5 20 19H4z" />
+          <circle cx="12" cy="15" r="2.6" />
+        </svg>
+      </span>
+      <span>AI 几何画板</span>
+    </a>
+    <nav class="topnav" aria-label="全局导航">
+      <a href="index.html">工作区</a>
+      <a href="dashboard.html" class="active">工作台</a>
+      <a href="settings.html">设置</a>
+    </nav>
+    <div class="topbar-right" data-topbar-right></div>
+  </header>
+
+  <main class="page">
+    <div class="page-head" style="display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;flex-wrap:wrap">
+      <div>
+        <h1>个人工作台</h1>
+        <p id="welcome">欢迎回来。这里汇总你的作图数据与云端会话。</p>
+      </div>
+      <button class="btn" id="new-session-btn" style="margin-bottom:0.2rem">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        新建会话
+      </button>
+    </div>
+
+    <!-- 统计卡片 -->
+    <div class="stat-grid">
+      <div class="stat-card">
+        <span class="s-label">
+          <span class="s-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 3 21 19H3z"/><circle cx="12" cy="15" r="2.4"/></svg></span>
+          累计作图 / 计算
+        </span>
+        <span class="s-value" id="stat-requests">–</span>
+        <span class="s-foot" id="stat-requests-foot">近 7 天 +106 次</span>
+      </div>
+      <div class="stat-card">
+        <span class="s-label">
+          <span class="s-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-9-9"/><path d="M21 3v6h-6"/></svg></span>
+          云端会话
+        </span>
+        <span class="s-value" id="stat-sessions">–</span>
+        <span class="s-foot">随账号同步,多设备可用</span>
+      </div>
+      <div class="stat-card">
+        <span class="s-label">
+          <span class="s-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 3a7 7 0 0 1 7 7c0 2.4-1.2 4.5-3 5.7V19a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-3.3c-1.8-1.2-3-3.3-3-5.7a7 7 0 0 1 7-7Z"/></svg></span>
+          本月 Token 用量
+        </span>
+        <span class="s-value" id="stat-tokens">–</span>
+        <span class="s-foot">由 EdgeOne AI Gateway 统计</span>
+      </div>
+      <div class="stat-card">
+        <span class="s-label">
+          <span class="s-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 9h6M9 13h6M9 17h3"/></svg></span>
+          当前模型
+        </span>
+        <span class="s-value" style="font-size:1.15rem;padding-top:0.45rem" id="stat-model">–</span>
+        <span class="s-foot"><span class="dot dot-ok"></span>&nbsp;已连接 · 可在设置中切换</span>
+      </div>
+    </div>
+
+    <!-- 用量图表 + 模型分布 -->
+    <div class="dash-grid">
+      <div class="card card-white chart-card">
+        <div class="card-head">
+          <h2>近 7 天作图请求</h2>
+          <span class="c-sub">每次提交计 1 次 · 悬停查看详情</span>
+        </div>
+        <div class="usage-plot" id="usage-plot"></div>
+      </div>
+      <div class="card card-white chart-card">
+        <div class="card-head">
+          <h2>模型用量分布</h2>
+          <span class="c-sub">本月</span>
+        </div>
+        <ul class="model-list" id="model-list"></ul>
+      </div>
+    </div>
+
+    <!-- 云端会话 -->
+    <div class="sessions-head">
+      <h2>我的会话</h2>
+      <span class="h-note">保存在云端(模拟 GET /api/sessions),点击「打开」继续作图</span>
+    </div>
+    <ul class="session-list" id="session-list"></ul>
+  </main>
+
+  <script src="js/store.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>

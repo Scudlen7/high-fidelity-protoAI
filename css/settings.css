@@ -1,0 +1,153 @@
+/* ==========================================================================
+   高保真原型 · 设置页(模型接入 / 账户信息 / 数据管理 / 关于)
+   对应 .env 中 AI_GATEWAY_* 预留变量与 Roadmap "模型选择 UI" 的前端呈现
+   ========================================================================== */
+
+.settings-layout { display: grid; grid-template-columns: 200px 1fr; gap: 1.6rem; align-items: start; }
+
+.settings-nav {
+  position: sticky;
+  top: 76px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+.settings-nav button {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.62rem 0.85rem;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+  text-align: left;
+  cursor: pointer;
+}
+.settings-nav button:hover { background: rgba(12, 92, 86, 0.06); color: var(--brand); }
+.settings-nav button.active { background: var(--brand-soft); color: var(--brand); font-weight: 500; }
+
+.settings-panel { display: none; flex-direction: column; gap: 1rem; }
+.settings-panel.active { display: flex; }
+
+.settings-panel > .card h2 { font-size: 1.02rem; margin-bottom: 0.25rem; }
+.settings-panel > .card .card-sub { font-size: 0.84rem; color: var(--ink-soft); margin-bottom: 1.1rem; }
+
+/* ---------- 模型接入 ---------- */
+
+.model-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  padding: 0.95rem 1rem;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-md);
+  background: #fff;
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.model-option + .model-option { margin-top: 0.65rem; }
+.model-option:hover { border-color: #b9d5cd; }
+.model-option.selected { border-color: var(--brand); box-shadow: 0 0 0 3px rgba(12, 92, 86, 0.12); }
+.model-option input { accent-color: var(--brand); margin-top: 0.3rem; }
+.model-option .mo-main { flex: 1; min-width: 0; }
+.model-option .mo-title { display: flex; align-items: center; gap: 0.55rem; flex-wrap: wrap; }
+.model-option .mo-title b { font-family: var(--mono); font-size: 0.92rem; }
+.model-option .mo-desc { font-size: 0.82rem; color: var(--ink-soft); margin-top: 0.2rem; }
+.model-option .mo-tags { display: flex; gap: 0.4rem; margin-top: 0.35rem; flex-wrap: wrap; }
+
+.gateway-card {
+  border: 1px solid #b9d5cd;
+  background: linear-gradient(135deg, #eef6f2, #e2efe9);
+}
+.gateway-row { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; }
+.gateway-row code {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 4px;
+  padding: 0.08rem 0.4rem;
+}
+.gateway-stats { display: flex; gap: 1.6rem; margin-top: 0.8rem; flex-wrap: wrap; }
+.gateway-stats .g-stat { font-size: 0.82rem; color: var(--ink-soft); }
+.gateway-stats .g-stat b { display: block; font-size: 1.15rem; color: var(--ink); font-variant-numeric: tabular-nums; }
+
+.key-box {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.7rem 0.9rem;
+  background: #1e2622;
+  border-radius: var(--radius-sm);
+  margin: 0.8rem 0;
+}
+.key-box code { font-family: var(--mono); color: #b7d8c9; font-size: 0.88rem; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.key-box button {
+  border: 1px solid #3d4a42;
+  background: transparent;
+  color: #cfe0da;
+  border-radius: 6px;
+  padding: 0.25rem 0.7rem;
+  font-size: 0.78rem;
+  cursor: pointer;
+  flex: none;
+}
+.key-box button:hover { background: #2b342e; }
+
+.test-result { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.9rem; font-size: 0.86rem; }
+.test-result.ok { color: var(--ok); }
+.test-result.err { color: var(--err-ink); }
+
+/* ---------- 账户信息 ---------- */
+
+.profile-row { display: flex; align-items: center; gap: 1.1rem; margin-bottom: 1.1rem; }
+.profile-row .p-meta { flex: 1; }
+.profile-row .p-meta b { font-size: 1.05rem; }
+.profile-row .p-meta p { font-size: 0.82rem; color: var(--ink-soft); }
+
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; }
+.form-grid .full { grid-column: 1 / -1; }
+
+/* ---------- 数据管理 ---------- */
+
+.data-actions { display: flex; flex-direction: column; gap: 0.65rem; }
+.data-action {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-md);
+  background: #fff;
+}
+.data-action .d-main { flex: 1; min-width: 0; }
+.data-action .d-main b { font-size: 0.92rem; font-weight: 600; }
+.data-action .d-main p { font-size: 0.8rem; color: var(--ink-soft); margin-top: 0.1rem; }
+
+.danger-zone { border-color: #e4bdb4 !important; background: #fdf6f4 !important; }
+.danger-zone .d-main b { color: var(--err-ink); }
+
+/* ---------- 关于 ---------- */
+
+.about-logo { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.9rem; }
+.about-logo .brand { font-size: 1.25rem; color: var(--ink); }
+.about-logo .version { font-size: 0.78rem; color: var(--ink-faint); }
+
+.tech-list { list-style: none; margin: 0.9rem 0 0; padding: 0; display: flex; flex-direction: column; gap: 0.55rem; }
+.tech-list li { display: flex; align-items: center; gap: 0.65rem; font-size: 0.88rem; }
+.tech-list li .t-name { width: 130px; color: var(--ink-soft); flex: none; }
+.tech-list li .t-desc { font-size: 0.84rem; color: var(--ink-soft); }
+
+.api-status { list-style: none; margin: 0.9rem 0 0; padding: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+.api-status li { display: flex; align-items: center; gap: 0.6rem; font-size: 0.86rem; }
+.api-status code { font-family: var(--mono); font-size: 0.8rem; background: #ede8dd; border-radius: 4px; padding: 0.1rem 0.45rem; }
+.api-status .st { margin-left: auto; font-size: 0.78rem; color: var(--ok); }
+
+/* ---------- 响应式 ---------- */
+
+@media (max-width: 860px) {
+  .settings-layout { grid-template-columns: 1fr; }
+  .settings-nav { position: static; flex-direction: row; flex-wrap: wrap; }
+  .form-grid { grid-template-columns: 1fr; }
+}
